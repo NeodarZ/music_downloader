@@ -17,7 +17,8 @@ class bandcamp(Extractor):
         soup = BeautifulSoup(r.text, 'html.parser')
         items = soup.select('a[href]')
         for item in items:
-            if '/album' in item['href']:
+            if '/album' in item['href'] and \
+                    not item['href'].startswith("http"):
                 url = self.root.rstrip('/') + item['href']
                 if url not in self._albums:
                     self._albums.append(url)
