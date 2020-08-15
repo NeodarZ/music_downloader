@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from .common import Extractor
 
 class bandcamp(Extractor):
-    pattern = re.compile(r'(http(?:s|):\/\/.*bandcamp.com\/)')
+    pattern = re.compile(r'(http(?:s|):\/\/.*bandcamp.com)')
     filename_template = "%(artist)s/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s"
 
     def __init__(self, reg, url):
