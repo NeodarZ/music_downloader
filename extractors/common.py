@@ -1,7 +1,7 @@
 import os
 import re
 from pathlib import Path
-from sh import youtube_dl
+from sh import youtube_dl, ErrorReturnCode_1
 from utils import read_file, write_file
 
 
@@ -36,12 +36,16 @@ class Extractor():
         write_file(cache_file, self.root + "," + self.__class__.__name__)
 
     def _yt_wrapper(self, url, output):
-        for line in youtube_dl(
-                url, audio_format="mp3",
-                add_metadata=True,
-                o=output + self.filename_template,
-                _iter=True):
-            print(line.strip())
+        try:
+            for line in youtube_dl(
+                    url, audio_format="mp3",
+                    add_metadata=True,
+                    o=output + self.filename_template,
+                    ignore_errors=True,
+                    _iter=True):
+                print(line.strip())
+        except ErrorReturnCode_1:
+            pass
 
     def download_albums(self, output):
         for album in self._albums:
