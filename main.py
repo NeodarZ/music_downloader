@@ -37,6 +37,8 @@ if args.update:
 
     urls_cache = read_file(cache_file)
 
+    urls_failed = []
+
     for url in urls_cache:
         try:
             args.extractor = url.split(',')[1]
@@ -47,6 +49,11 @@ if args.update:
             dl_job.run()
         except NoExtractorException as exc:
             logging.error(exc)
+
+    if urls_failed:
+        print("There was no extractors for the following urls:")
+        for url_failed in urls_failed:
+            print(url_failed)
 
 if args.url:
     print('Downloading from url...')
@@ -61,6 +68,8 @@ if args.file:
 
     urls = read_file(args.file)
 
+    urls_failed = []
+
     for url in urls:
         if url:
             try:
@@ -68,6 +77,12 @@ if args.file:
                 dl_job.run()
             except NoExtractorException as exc:
                 logging.error(exc)
+                urls_failed.append(exc)
+
+    if urls_failed:
+        print("There was no extractors for the following urls:")
+        for url_failed in urls_failed:
+            print(url_failed)
 
 if not args.url and not args.update and not args.file:
     parser.print_help()
