@@ -48,8 +48,9 @@ if args.file:
     urls = read_file(args.file)
 
     for url in urls:
-        dl_job = DlJob(url, args.output)
-        dl_job.run()
+        if url:
+            dl_job = DlJob(url, args.output)
+            dl_job.run()
 
 if not args.url and not args.update and not args.file:
     parser.print_help()
