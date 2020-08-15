@@ -15,8 +15,7 @@ class DlJob():
         self.output = output
         self._albums = []
         if not self.extr:
-            logging.error(url + " is not supported")
-            sys.exit(1)
+            logging.error("No extractor found for " + url + ".")
 
     def _find(self, url):
         for cls in self._list_extractors():
