@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 from sh import youtube_dl
 from utils import read_file, write_file
@@ -7,7 +8,13 @@ from utils import read_file, write_file
 class Extractor():
 
     def __init__(self, reg, url):
-        self.root = reg.group(1)
+        self.root = None
+        if not reg:
+            r = re.search(r'(^http(?:s|):(?:\/\/.*?\/|\/\/.*))', url)
+            if r:
+                self.root = r.group(1)
+        if not self.root:
+            self.root = reg.group(1)
         self._albums = []
         self.root_path = self._root_path()
         self._update_cache(self.root)
@@ -26,7 +33,7 @@ class Extractor():
         for url in urls_cache:
             if url.startswith(self.root):
                 return
-        write_file(cache_file, self.root)
+        write_file(cache_file, self.root + "," + self.__class__.__name__)
 
     def _yt_wrapper(self, url, output):
         for line in youtube_dl(

@@ -21,3 +21,6 @@ def read_file(filename):
 def write_file(filename, data):
     with open(filename, 'a') as filehandler:
         filehandler.write(data+'\n')
+
+class NoExtractorException(Exception):
+    pass

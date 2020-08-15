@@ -2,9 +2,12 @@
 
 import os
 import argparse
+import logging
 from pathlib import Path
 from extractors.job import DlJob
 from utils import read_file
+
+from utils import NoExtractorException
 
 module_path = os.path.abspath(__file__)
 ROOT = Path(module_path).parent
@@ -19,6 +22,7 @@ parser.add_argument(
     help="folder where to put downloaded albums. "
     "Default to: " + str(ROOT) + "/out/",
     default=str(ROOT) + "/out/")
+parser.add_argument('--extractor', help="name of the extractor")
 
 args = parser.parse_args()
 
@@ -34,13 +38,23 @@ if args.update:
     urls_cache = read_file(cache_file)
 
     for url in urls_cache:
-        dl_job = DlJob(url, args.output)
-        dl_job.run()
+        try:
+            args.extractor = url.split(',')[1]
+        except IndexError:
+            pass
+        try:
+            dl_job = DlJob(url, args.output, args.extractor)
+            dl_job.run()
+        except NoExtractorException as exc:
+            logging.error(exc)
 
 if args.url:
     print('Downloading from url...')
-    dl_job = DlJob(args.url, args.output)
-    dl_job.run()
+    try:
+        dl_job = DlJob(args.url, args.output, args.extractor)
+        dl_job.run()
+    except NoExtractorException as exc:
+        logging.error(exc)
 
 if args.file:
     print("Downloading from file...")
@@ -49,8 +63,11 @@ if args.file:
 
     for url in urls:
         if url:
-            dl_job = DlJob(url, args.output)
-            dl_job.run()
+            try:
+                dl_job = DlJob(url, args.output, args.extractor)
+                dl_job.run()
+            except NoExtractorException as exc:
+                logging.error(exc)
 
 if not args.url and not args.update and not args.file:
     parser.print_help()

@@ -3,6 +3,8 @@ import re
 import importlib
 import sys
 
+from utils import NoExtractorException
+
 extrs = [
     'bandcamp'
 ]
@@ -10,12 +12,16 @@ extrs = [
 
 class DlJob():
 
-    def __init__(self, url, output):
-        self.extr = self._find(url)
+    def __init__(self, url, output, extractor=None):
+        if extractor in extrs:
+            cls = self._get_class(extractor)
+            self.extr = cls(reg=None, url=url)
+        else:
+            self.extr = self._find(url)
         self.output = output
         self._albums = []
         if not self.extr:
-            logging.error("No extractor found for " + url + ".")
+            raise NoExtractorException("No extractor found for " + url + ".")
 
     def _find(self, url):
         for cls in self._list_extractors():
@@ -40,6 +46,13 @@ class DlJob():
                 hasattr(cls, "pattern") and cls.__module__ == module.__name__
             )
         ]
+
+    def _get_class(self, extractor):
+        module = importlib.import_module('.' + extractor, __package__)
+        classes = self._get_classes(module)
+        for cls in classes:
+            if cls.__name__ == extractor:
+                return cls
 
     def run(self):
         self.extr.get_albums()
