@@ -6,7 +6,8 @@ import sys
 from utils import NoExtractorException
 
 extrs = [
-    'bandcamp'
+    'bandcamp',
+    'soundcloud',
 ]
 
 

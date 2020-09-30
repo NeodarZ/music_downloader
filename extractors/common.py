@@ -9,12 +9,21 @@ class Extractor():
 
     def __init__(self, reg, url):
         self.root = None
+        self.path = None
         if not reg:
             r = re.search(r'(^http(?:s|):(?:\/\/.*?\/|\/\/.*))', url)
             if r:
                 self.root = r.group(1)
+                try:
+                    self.path = r.group(2)
+                except IndexError:
+                    pass
         if not self.root:
             self.root = reg.group(1)
+            try:
+                self.path = reg.group(2)
+            except IndexError:
+                pass
         self._albums = []
         self.root_path = self._root_path()
         self._update_cache(self.root)
