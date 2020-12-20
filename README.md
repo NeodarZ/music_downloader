@@ -28,3 +28,4 @@ optional arguments:
 # Suuported website
 
 - [x] Bandcamp
+- [x] Soundcloud
