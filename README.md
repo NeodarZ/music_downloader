@@ -25,7 +25,7 @@ optional arguments:
   --output OUTPUT  folder where to put downloaded albums. Default to: <app_installed_folder>/out/
 ```
 
-# Suuported website
+# Suported website
 
 - [x] Bandcamp
 - [x] Soundcloud
