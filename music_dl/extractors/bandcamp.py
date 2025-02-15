@@ -3,7 +3,7 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 
-from .common import Extractor
+from music_dl.extractors.common import Extractor
 
 class bandcamp(Extractor):
     pattern = re.compile(r'(http(?:s|):\/\/.*bandcamp.com)')

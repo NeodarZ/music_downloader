@@ -3,7 +3,7 @@ import re
 import importlib
 import sys
 
-from utils import NoExtractorException
+from music_dl.utils import NoExtractorException
 
 extrs = [
     'bandcamp',

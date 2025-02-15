@@ -3,7 +3,7 @@ Simple tool for download all album from an artist
 # Install
 
 ```
-pip install -r requirements.txt
+poetry install
 ```
 
 ## Dependencies
@@ -13,7 +13,11 @@ pip install -r requirements.txt
 # Usage
 
 ```
-usage: main.py [-h] [--url URL] [--update] [--file FILE] [--output OUTPUT]
+poetry run music-dl
+```
+
+```
+usage: music-dl [-h] [--url URL] [--update] [--file FILE] [--output OUTPUT]
 
 Custom album downloader tool
 

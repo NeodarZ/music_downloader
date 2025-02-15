@@ -2,7 +2,7 @@ import os
 import re
 from pathlib import Path
 from sh import youtube_dl, ErrorReturnCode_1
-from utils import read_file, write_file
+from music_dl.utils import read_file, write_file
 
 
 class Extractor():

@@ -3,7 +3,7 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 
-from .common import Extractor
+from music_dl.common import Extractor
 
 class soundcloud(Extractor):
     pattern = re.compile(r'(http(?:s|):\/\/.*soundcloud.com)(.*)')
